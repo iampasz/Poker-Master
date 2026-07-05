@@ -68,7 +68,7 @@ fun PokerScreenContent(
                         onNewGame()
                     }
                 ) {
-                    Text("NEW GAME")
+                    Text("NEW GAME")d
                 }
 
                 Button(
