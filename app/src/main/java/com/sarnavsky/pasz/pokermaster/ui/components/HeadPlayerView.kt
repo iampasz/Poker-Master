@@ -23,7 +23,7 @@ import com.sarnavsky.pasz.pokermaster.PlayerAction
 import com.sarnavsky.pasz.pokermaster.R
 
 @Composable
-fun PlayerView(
+fun HeadPlayerView(
     player: Player,
     showCards: Boolean,
     avatar: Int,
@@ -35,18 +35,8 @@ fun PlayerView(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Image(
-            painter = painterResource(id = avatar),
-            contentDescription = "Player Avatar",
-            modifier = Modifier
-                .size(52.dp)
-                .clip(CircleShape),
-            contentScale = ContentScale.Crop
-        )
-        Spacer(Modifier.height(6.dp))
 
         Text(
-            color = Color.White,
             text = player.name,
             fontWeight = FontWeight.Bold,
             fontSize = 14.sp
@@ -62,7 +52,12 @@ fun PlayerView(
 
                 PokerCard(
                     card = it,
-                    opened = true
+                    opened = true,
+                    modifier = modifier
+                        .size(
+                            width = 64.dp,
+                            height = 90.dp
+                        )
                 )
             }
 
@@ -70,31 +65,8 @@ fun PlayerView(
 
         Spacer(Modifier.height(8.dp))
 
-        Box(
-            modifier = Modifier
-                .background(
-                    when (player.action) {
-                        PlayerAction.FOLD -> Color(0xFFD32F2F)
-                        PlayerAction.CALL -> Color(0xFF1976D2)
-                        PlayerAction.CHECK -> Color(0xFF388E3C)
-                        PlayerAction.RAISE -> Color(0xFFF57C00)
-                        PlayerAction.ALL_IN -> Color(0xFF7B1FA2)
-                        else -> Color.DarkGray
-                    },
-                    RoundedCornerShape(20.dp)
-                )
-                .padding(horizontal = 12.dp, vertical = 4.dp)
-        ) {
 
-            Text(
-                text = player.action.name.replace("_", " "),
-                color = Color.White,
-                fontSize = 11.sp
-            )
 
-        }
-
-        Spacer(Modifier.height(6.dp))
 
         if (player.isDealer) {
             Text(
@@ -119,7 +91,7 @@ fun PlayerView(
 
 @Preview(showBackground = true)
 @Composable
-fun PlayerViewPreview() {
+fun HeadPlayerViewPreview() {
 
     val player = Player(
         id = 0,
@@ -131,7 +103,7 @@ fun PlayerViewPreview() {
         action = PlayerAction.CALL
     }
 
-    PlayerView(
+    HeadPlayerView(
         player = player,
         showCards = true,
         R.drawable.player1

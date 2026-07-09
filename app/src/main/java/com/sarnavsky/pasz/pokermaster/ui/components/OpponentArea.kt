@@ -44,7 +44,7 @@ fun OpponentArea(
             contentAlignment = Alignment.Center
         ) {
             PlayerView(
-                player = players[1],
+                player = players[2],
                 showCards = gameFinished,
                 shuffledAvatars[0]
             )
@@ -59,7 +59,7 @@ fun OpponentArea(
         ) {
 
             PlayerView(
-                player = players[2],
+                player = players[1],
                 showCards = gameFinished,
                 shuffledAvatars[1]
             )

@@ -1,3 +1,4 @@
+import com.sarnavsky.pasz.pokermaster.BotStyle
 import com.sarnavsky.pasz.pokermaster.PlayerAction
 
 data class Player(
@@ -6,9 +7,14 @@ data class Player(
 
     val name: String,
 
+
+    var botStyle: BotStyle = BotStyle.NORMAL,
+
     val cards: MutableList<PlayingCard> = mutableListOf(),
 
-    var chips: Int = 100,
+    var isCurrentTurn: Boolean = false,
+
+    var chips: Int = 500,
 
     var currentBet: Int = 0,
 

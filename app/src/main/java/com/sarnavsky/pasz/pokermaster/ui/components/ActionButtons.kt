@@ -28,9 +28,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.test.book_5
+import com.sarnavsky.pasz.pokermaster.PlayerAction
 
 @Composable
 fun ActionPanel(
+
+    actions : List <PlayerAction>,
 
     onFold: () -> Unit,
 
@@ -43,6 +46,8 @@ fun ActionPanel(
     onAllIn: () -> Unit
 
 ) {
+
+    val isEnabled = PlayerAction.CHECK in actions
 
     Box {
 
@@ -68,7 +73,9 @@ fun ActionPanel(
                     title = "FOLD",
                     value = "",
                     color = Color.Red,
+                    enabled = PlayerAction.FOLD in actions,
                     onFold
+
                 )
 
                 ActionButton(
@@ -77,6 +84,7 @@ fun ActionPanel(
                     title = "CHECK",
                     value = "",
                     color = Color.Green,
+                    enabled = PlayerAction.CHECK in actions,
                     onCheck
                 )
 
@@ -86,6 +94,7 @@ fun ActionPanel(
                     title = "CALL",
                     value = "200",
                     color = Color.Cyan,
+                    enabled = PlayerAction.CALL in actions,
                     onCall
                 )
 
@@ -95,6 +104,7 @@ fun ActionPanel(
                     title = "RAISE",
                     value = "400",
                     color = Color(0xFFFF9800),
+                    enabled = PlayerAction.RAISE in actions,
                     onRaise
                 )
 
@@ -104,6 +114,7 @@ fun ActionPanel(
                     title = "ALL-IN",
                     value = "1500",
                     color = Color(0xFFA64DFF),
+                    enabled = PlayerAction.ALL_IN in actions,
                     onAllIn
                 )
 
@@ -140,13 +151,14 @@ fun ActionButton(
     title: String,
     value: String,
     color: Color,
+    enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
 
     Card(
         modifier = modifier,
+        enabled = enabled,
         onClick = onClick,
-
 
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(

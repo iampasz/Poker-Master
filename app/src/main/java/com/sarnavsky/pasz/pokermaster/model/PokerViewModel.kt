@@ -2,6 +2,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.sarnavsky.pasz.pokermaster.model.PokerGame
 
 class PokerViewModel : ViewModel() {
 
