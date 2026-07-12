@@ -14,6 +14,7 @@ import com.sarnavsky.pasz.pokermaster.PlayerAction
 
 import androidx.compose.runtime.mutableIntStateOf
 import com.sarnavsky.pasz.pokermaster.BotStyle
+import com.sarnavsky.pasz.pokermaster.PokerAI
 
 
 class PokerGame {
@@ -23,7 +24,10 @@ class PokerGame {
 
     var currentBet = 20
 
-    private var currentPlayerIndex = 0
+    val smallBlind = 10
+    val bigBlind = 20
+
+    var currentPlayerIndex = 0
 
     var openedCards by mutableIntStateOf(0)
         private set
@@ -91,7 +95,7 @@ class PokerGame {
 
         currentPlayerIndex = (bigBlindIndex + 1) % players.size
 
-        currentPlayerIndex = 0
+
 
 
        // val actions = getAvailableActions(players[currentPlayerIndex])
@@ -149,6 +153,9 @@ class PokerGame {
 
             Log.d("POKER_BLIND", "${player.name}: $position")
         }
+
+
+        PokerAI.startGame(this)
 
     }
 
@@ -242,19 +249,41 @@ class PokerGame {
 
     fun openNextCard() {
 
-        if (!playerMoved) return
+       // if (!playerMoved) return
 
         opponentsMakeMove()
 
-        if (openedCards < 5) {
-            openedCards++
-        }
+//        when (openedCards) {
+//            0 -> openedCards = 3   // Flop
+//            3 -> openedCards = 4   // Turn
+//            4 -> openedCards = 5   // River
+//        }
 
         if (openedCards == 5) {
             gameFinished = true
         }
 
         playerMoved = false
+
+
+        when (openedCards) {
+            0 -> {
+                openedCards = 3
+                round = GameRound.FLOP
+            }
+
+            3 -> {
+                openedCards = 4
+                round = GameRound.TURN
+            }
+
+            4 -> {
+                openedCards = 5
+                round = GameRound.RIVER
+            }
+        }
+
+        PokerAI.analyze(this)
     }
 
     fun playerFold() {

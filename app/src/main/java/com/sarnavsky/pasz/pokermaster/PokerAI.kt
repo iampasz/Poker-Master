@@ -1,122 +1,115 @@
 package com.sarnavsky.pasz.pokermaster
 
+import Player
+import android.util.Log
+import com.sarnavsky.pasz.pokermaster.model.PokerGame
 import kotlin.random.Random
 
 
 object PokerAI {
 
-    fun decide(
-        category: HandCategory,
-        style: BotStyle
-    ): PlayerAction {
 
-        val baseAction = decideByCategory(category)
+    fun startGame(game: PokerGame) {
+        Log.d("POKER_AI", "Гра почалась")
 
-        return applyStyle(baseAction, style)
-    }
-
-    fun decideByCategory(category: HandCategory): PlayerAction {
-
-        val roll = Random.nextInt(100)
-
-        return when (category) {
-
-            HandCategory.PREMIUM -> when {
-                roll < 5 -> PlayerAction.FOLD
-                roll < 20 -> PlayerAction.CALL
-                roll < 75 -> PlayerAction.RAISE
-                else -> PlayerAction.ALL_IN
-            }
-
-            HandCategory.STRONG -> when {
-                roll < 10 -> PlayerAction.FOLD
-                roll < 45 -> PlayerAction.CALL
-                roll < 90 -> PlayerAction.RAISE
-                else -> PlayerAction.ALL_IN
-            }
-
-            HandCategory.PLAYABLE -> when {
-                roll < 25 -> PlayerAction.FOLD
-                roll < 70 -> PlayerAction.CALL
-                roll < 95 -> PlayerAction.RAISE
-                else -> PlayerAction.ALL_IN
-            }
-
-            HandCategory.MARGINAL -> when {
-                roll < 55 -> PlayerAction.FOLD
-                roll < 90 -> PlayerAction.CALL
-                roll < 98 -> PlayerAction.RAISE
-                else -> PlayerAction.ALL_IN
-            }
-
-            HandCategory.WEAK -> when {
-                roll < 80 -> PlayerAction.FOLD
-                roll < 97 -> PlayerAction.CALL
-                roll < 99 -> PlayerAction.RAISE
-                else -> PlayerAction.ALL_IN
-            }
+        if (isHumanTurn(game)) {
+            Log.d("POKER_AI", "Хід людини")
+        } else {
+            Log.d("POKER_AI", "Хід AI")
         }
-    }
 
-
-    private fun applyStyle(
-        action: PlayerAction,
-        style: BotStyle
-    ): PlayerAction {
-
-        val roll = Random.nextInt(100)
-
-        return when (style) {
-
-            BotStyle.NORMAL -> action
-
-            BotStyle.AGGRESSIVE -> {
-
-                when (action) {
-
-                    PlayerAction.CALL ->
-                        if (roll < 40) PlayerAction.RAISE else action
-
-                    PlayerAction.RAISE ->
-                        if (roll < 20) PlayerAction.ALL_IN else action
-
-                    PlayerAction.FOLD ->
-                        if (roll < 10) PlayerAction.CALL else action
-
-                    else -> action
-                }
-            }
-
-            BotStyle.TIGHT -> {
-
-                when (action) {
-
-                    PlayerAction.CALL ->
-                        if (roll < 30) PlayerAction.FOLD else action
-
-                    PlayerAction.RAISE ->
-                        if (roll < 30) PlayerAction.CALL else action
-
-                    PlayerAction.ALL_IN ->
-                        if (roll < 50) PlayerAction.RAISE else action
-
-                    else -> action
-                }
-            }
-
-            BotStyle.LOOSE -> {
-
-                when (action) {
-
-                    PlayerAction.FOLD ->
-                        if (roll < 40) PlayerAction.CALL else action
-
-                    PlayerAction.CALL ->
-                        if (roll < 20) PlayerAction.RAISE else action
-
-                    else -> action
-                }
-            }
+        if (isBigBlind(game)) {
+            Log.d("POKER_AI", "Current player is Big Blind")
+        } else {
+            Log.d("POKER_AI", "Current player is NOT Big Blind")
         }
+
+        analyze(game)
+
+
     }
+
+    private fun isHumanTurn(game: PokerGame): Boolean {
+        return game.currentPlayerIndex == 0
+    }
+
+    private fun isBigBlind(game: PokerGame): Boolean {
+        return game.players[game.currentPlayerIndex].isBigBlind
+    }
+
+    private fun wasRaiseAfterBigBlind(game: PokerGame): Boolean {
+        return game.currentBet > game.bigBlind
+    }
+
+    fun analyze(game: PokerGame) {
+
+        checkCurrentPlayer(game)
+        checkRound(game)
+
+        val handStrength = getHandStrength(game)
+
+        Log.d("POKER_AI", "Hand strength: $handStrength")
+
+        val round = checkRound(game)
+
+        Log.d("POKER_AI", "Round: $round")
+
+
+
+        while (!isHumanTurn(game)) {
+
+            makeMove(game)
+
+            nextPlayer(game)
+        }
+
+
+    }
+
+    fun checkCurrentPlayer(game: PokerGame) {
+
+    }
+
+    private fun checkRound(game: PokerGame): GameRound {
+        return game.round
+    }
+
+
+
+    fun getHandStrength(game: PokerGame): Int {
+        val player = game.players[game.currentPlayerIndex]
+
+        return  PreflopOdds().getStartingHandRank(
+            player.cards[0],
+            player.cards[1]
+        )
+    }
+
+
+
+
+
+    fun makeMove(game: PokerGame){
+
+        Log.d("POKER_AI", "makeMove: ${game.currentPlayerIndex}")
+
+    }
+
+
+    fun nextPlayer(game: PokerGame){
+
+        Log.d("POKER_AI2", "Ходить гравець "+ game.currentPlayerIndex)
+
+        game.currentPlayerIndex++
+
+        if(game.currentPlayerIndex ==4){
+            game.currentPlayerIndex = 0
+        }
+
+    
+
+        analyze(game)
+    }
+
+
 }

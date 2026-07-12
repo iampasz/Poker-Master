@@ -4,7 +4,7 @@ enum class HandRank(val power: Int) {
 
     HIGH_CARD(1),
 
-    PAIR(2),
+    PAIR(2),    
 
     TWO_PAIR(3),
 

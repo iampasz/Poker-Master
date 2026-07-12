@@ -2,7 +2,6 @@ import com.sarnavsky.pasz.pokermaster.HandRank
 import com.sarnavsky.pasz.pokermaster.HandResult
 
 object PokerHandEvaluator {
-
     fun evaluate(cards: List<PlayingCard>): HandResult {
 
         val rankCounts = cards

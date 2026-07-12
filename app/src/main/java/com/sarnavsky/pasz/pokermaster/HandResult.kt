@@ -4,5 +4,6 @@ import PlayingCard
 
 data class HandResult(
     val rank: HandRank,
-    val cards: List<PlayingCard>
+    val cards: List<PlayingCard>,
+
 )

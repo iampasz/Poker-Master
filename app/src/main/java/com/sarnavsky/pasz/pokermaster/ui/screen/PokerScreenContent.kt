@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.sarnavsky.pasz.pokermaster.PokerAI.nextPlayer
 import com.sarnavsky.pasz.pokermaster.R
 import com.sarnavsky.pasz.pokermaster.model.PokerGame
 import com.sarnavsky.pasz.pokermaster.ui.components.ActionPanel
@@ -56,7 +57,7 @@ fun PokerScreenContent(
                     onClick = {
                         game.openNextCard()
                     },
-                    enabled = game.playerMoved
+                    //enabled = game.playerMoved
                 ) {
                     Text("NEXT")
                 }
@@ -210,6 +211,7 @@ fun PokerScreenContent(
                 onFold = {
                     game.playerFold()
                     game.openNextCard()
+                    game.currentPlayerIndex++
 
                 },
 
