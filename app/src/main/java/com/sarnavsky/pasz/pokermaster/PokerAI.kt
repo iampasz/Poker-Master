@@ -1,6 +1,9 @@
 package com.sarnavsky.pasz.pokermaster
 
 import Player
+import PlayingCard
+import Rank
+import Suit
 import android.util.Log
 import com.sarnavsky.pasz.pokermaster.model.PokerGame
 import kotlin.random.Random
@@ -42,6 +45,22 @@ object PokerAI {
     }
 
     fun analyze(game: PokerGame) {
+
+        val cards = listOf(
+
+            PlayingCard(Suit.HEARTS, Rank.ACE),
+            PlayingCard(Suit.HEARTS, Rank.KING),
+            PlayingCard(Suit.HEARTS, Rank.QUEEN),
+            PlayingCard(Suit.DIAMONDS, Rank.JACK),
+            PlayingCard(Suit.HEARTS, Rank.SIX),
+            PlayingCard(Suit.HEARTS, Rank.FIVE),
+            PlayingCard(Suit.HEARTS, Rank.TEN)
+
+        )
+
+       val result =  PokerWinnerEvaluator().isRoyalFlush(cards)
+
+        Log.d("POKER_AI3", "What is it: $result")
 
         checkCurrentPlayer(game)
         checkRound(game)
