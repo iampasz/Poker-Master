@@ -28,8 +28,6 @@ object PokerAI {
         }
 
         analyze(game)
-
-
     }
 
     private fun isHumanTurn(game: PokerGame): Boolean {
@@ -49,18 +47,24 @@ object PokerAI {
         val cards = listOf(
 
             PlayingCard(Suit.HEARTS, Rank.ACE),
-            PlayingCard(Suit.HEARTS, Rank.KING),
-            PlayingCard(Suit.HEARTS, Rank.QUEEN),
-            PlayingCard(Suit.DIAMONDS, Rank.JACK),
-            PlayingCard(Suit.HEARTS, Rank.SIX),
-            PlayingCard(Suit.HEARTS, Rank.FIVE),
-            PlayingCard(Suit.HEARTS, Rank.TEN)
+            PlayingCard(Suit.HEARTS, Rank.JACK),
+            PlayingCard(Suit.CLUBS, Rank.ACE),
+            PlayingCard(Suit.CLUBS, Rank.TWO),
+            PlayingCard(Suit.HEARTS, Rank.THREE),
+            PlayingCard(Suit.HEARTS, Rank.TEN),
+            PlayingCard(Suit.HEARTS, Rank.TWO)
 
         )
 
-       val result =  PokerWinnerEvaluator().isRoyalFlush(cards)
 
-        Log.d("POKER_AI3", "What is it: $result")
+        val result2 =  PokerWinnerEvaluator().checkFlush(cards)
+
+        Log.d("POKER_AI3", "What is it : $result2")
+
+        game.players[0].handResult
+
+
+
 
         checkCurrentPlayer(game)
         checkRound(game)
@@ -72,6 +76,10 @@ object PokerAI {
         val round = checkRound(game)
 
         Log.d("POKER_AI", "Round: $round")
+
+
+
+
 
 
 

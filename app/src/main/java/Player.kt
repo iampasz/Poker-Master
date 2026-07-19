@@ -1,4 +1,5 @@
 import com.sarnavsky.pasz.pokermaster.BotStyle
+import com.sarnavsky.pasz.pokermaster.HandResult
 import com.sarnavsky.pasz.pokermaster.PlayerAction
 
 data class Player(
@@ -28,5 +29,7 @@ data class Player(
 
     var isBigBlind: Boolean = false,
 
-    var action: PlayerAction = PlayerAction.NONE
+    var action: PlayerAction = PlayerAction.NONE,
+
+    var handResult: HandResult? = null
 )
