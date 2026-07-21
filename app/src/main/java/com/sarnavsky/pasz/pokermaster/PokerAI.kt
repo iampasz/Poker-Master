@@ -5,6 +5,7 @@ import PlayingCard
 import Rank
 import Suit
 import android.util.Log
+import com.sarnavsky.pasz.pokermaster.WinnerEvaluator.determineWinners
 import com.sarnavsky.pasz.pokermaster.model.PokerGame
 import kotlin.random.Random
 
@@ -48,20 +49,51 @@ object PokerAI {
 
             PlayingCard(Suit.HEARTS, Rank.ACE),
             PlayingCard(Suit.HEARTS, Rank.JACK),
-            PlayingCard(Suit.CLUBS, Rank.ACE),
+            PlayingCard(Suit.CLUBS, Rank.QUEEN),
             PlayingCard(Suit.CLUBS, Rank.TWO),
             PlayingCard(Suit.HEARTS, Rank.THREE),
-            PlayingCard(Suit.HEARTS, Rank.TEN),
-            PlayingCard(Suit.HEARTS, Rank.TWO)
-
+            PlayingCard(Suit.CLUBS, Rank.TEN),
+            PlayingCard(Suit.HEARTS, Rank.SIX)
         )
 
+        var sevenCards = game.players[0].cards + game.tableCards
 
-        val result2 =  PokerWinnerEvaluator().checkFlush(cards)
 
-        Log.d("POKER_AI3", "What is it : $result2")
+        val result2 =  PokerWinnerEvaluator().evaluate(sevenCards)
+        Log.d("POKER_AI34", "Combination: ${result2.rank}")
+        Log.d("POKER_AI34", "Combination: ${result2.cards}")
 
-        game.players[0].handResult
+
+
+
+        game.players[0].handResult = HandResult(
+            rank = HandRank.STRAIGHT,
+            cards = listOf(
+                PlayingCard(suit = Suit.HEARTS, rank = Rank.ACE),
+                PlayingCard(suit = Suit.CLUBS, rank = Rank.JACK),
+                PlayingCard(suit = Suit.CLUBS, rank = Rank.TEN),
+                PlayingCard(suit = Suit.HEARTS, rank = Rank.THREE),
+                PlayingCard(suit = Suit.SPADES, rank = Rank.TWO)
+            )
+        )
+
+        game.players[1].handResult = HandResult(
+            rank = HandRank.FOUR_OF_A_KIND,
+            cards = listOf(
+                PlayingCard(suit = Suit.CLUBS, rank = Rank.ACE),
+                PlayingCard(suit = Suit.HEARTS, rank = Rank.JACK),
+                PlayingCard(suit = Suit.DIAMONDS, rank = Rank.TEN),
+                PlayingCard(suit = Suit.HEARTS, rank = Rank.THREE),
+                PlayingCard(suit = Suit.HEARTS, rank = Rank.TWO)
+            )
+        )
+
+        var winner = determineWinners(game.players)
+
+        if (winner.size>0){
+
+        }
+
 
 
 

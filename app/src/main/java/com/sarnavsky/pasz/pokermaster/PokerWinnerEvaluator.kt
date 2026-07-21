@@ -4,7 +4,30 @@ import PlayingCard
 
 class PokerWinnerEvaluator {
 
-    fun isRoyalFlush(cards: List<PlayingCard>): Boolean {
+    fun evaluate(cards: List<PlayingCard>): HandResult {
+
+        isRoyalFlush(cards)?.let { return it }
+
+        checkStraightFlush(cards)?.let { return it }
+
+        checkFourOfKind(cards)?.let { return it }
+
+        checkFullHouse(cards)?.let { return it }
+
+        checkFlush(cards)?.let { return it }
+
+        checkStraight(cards)?.let { return it }
+
+        checkThreeOfKind(cards)?.let { return it }
+
+        checkTwoPair(cards)?.let { return it }
+
+        checkOnePair(cards)?.let { return it }
+
+        return checkHighCard(cards)
+    }
+
+    fun isRoyalFlush(cards: List<PlayingCard>): HandResult? {
 
         // Проходимо по кожній масті
         for (suit in Suit.entries) {
@@ -26,11 +49,14 @@ class PokerWinnerEvaluator {
                 Rank.KING in ranks &&
                 Rank.ACE in ranks
             ) {
-                return true
+                return HandResult(
+                    rank = HandRank.ROYAL_FLUSH,
+                    cards = suitedCards
+                )
             }
         }
 
-        return false
+        return null
     }
 
     fun checkStraightFlush(cards: List<PlayingCard>): HandResult? {
